@@ -17,3 +17,5 @@ print("Gasoline:", Gas)
 print("Munitions:", Mun)
 print("Food:", Foo)
 print("Money:", Mon)
+
+print("\n -----End of Calculation-----")
