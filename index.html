@@ -1,28 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Warchest Calculator By Fwoinist</title>
+    <meta charset="UTF-8">
+    <title>Warchest Calculator (Local)</title>
     <style>
-        body { font-family: Arial; padding: 20px; }
-        input, button { margin: 10px 0; }
+        /* Basic CSS for presentation */
+        body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        input { padding: 8px; margin-bottom: 10px; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     </style>
 </head>
 <body>
     <h1>Warchest Calculator By Fwoinist</h1>
-    <label for="cityCount">Enter your city count:</label>
-    <input type="number" id="cityCount" min="1" required>
-    <button onclick="calculate()">Calculate</button>
+    
+    <label for="city_count">What is your city count?</label>
+    <input type="number" id="city_count" min="0" value="1" placeholder="Enter number of cities">
+    <button onclick="calculateWarchest()">Calculate Warchest</button>
 
-    <div id="results" style="margin-top:20px;"></div>
+    <hr>
+    <h2>Your warchest is:</h2>
+    <table id="resultsTable">
+        <tr><th>Resource</th><th>Amount</th></tr>
+    </table>
 
     <script>
-        function calculate() {
-            const CC = parseInt(document.getElementById("cityCount").value);
-            if (isNaN(CC) || CC <= 0) {
-                alert("Please enter a valid city count.");
+        // 🚀 The Python logic, rewritten in JavaScript
+        function calculateWarchest() {
+            const cityCountInput = document.getElementById('city_count');
+            // Get the value and convert it to a number
+            const CC = parseInt(cityCountInput.value);
+
+            // Basic validation
+            if (isNaN(CC) || CC < 0) {
+                alert("Please enter a valid, non-negative number for city count.");
                 return;
             }
 
+            // Calculation using JavaScript
             const results = {
                 "Aluminum": CC * 400,
                 "Iron": CC * 250,
@@ -32,14 +48,31 @@
                 "Money": CC * 350000
             };
 
-            let output = "<h2>Your Warchest:</h2><ul>";
-            for (const [key, value] of Object.entries(results)) {
-                output += `<li>${key}: ${value.toLocaleString()}</li>`;
-            }
-            output += "</ul><p>-----End of Calculation-----</p>";
-
-            document.getElementById("results").innerHTML = output;
+            // Display results in the table
+            displayResults(results);
         }
+
+        function displayResults(results) {
+            const tableBody = document.getElementById('resultsTable');
+            // Clear previous results, keeping the header row
+            while (tableBody.rows.length > 1) {
+                tableBody.deleteRow(1);
+            }
+
+            // Insert new rows for each resource
+            for (const [resource, amount] of Object.entries(results)) {
+                let newRow = tableBody.insertRow();
+                let cell1 = newRow.insertCell(0);
+                let cell2 = newRow.insertCell(1);
+                
+                cell1.textContent = resource;
+                // Use .toLocaleString() for thousands separators
+                cell2.textContent = amount.toLocaleString(); 
+            }
+        }
+        
+        // Run the calculation once on page load with a default value
+        calculateWarchest();
     </script>
 </body>
 </html>
